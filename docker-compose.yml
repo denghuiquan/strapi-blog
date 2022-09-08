@@ -1,0 +1,46 @@
+version: "3.1"
+# 该文件会从.env获取设置的环境变量值${ENV_KEYNAME}
+services:
+  strapi:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      # NODE_ENV: development
+      NODE_ENV: production
+    dns:
+      - 8.8.8.8
+    ports:
+      - "1337:1337"
+    expose:
+      - "1337"
+    links:
+      - mysql
+    restart: always
+    # volumes:
+    # - ./:/app
+
+  mysql:
+    image: mysql:5.7
+    hostname: mysql
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    # command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      DATABASE_CHARSET: ${DATABASE_CHARSET}
+      DATABASE_TABLE_PREFIX: ${DATABASE_TABLE_PREFIX}
+      LANG: en_US.UTF-8
+      TZ: Asia/Beijing
+
+    networks:
+      - default
+
+    volumes:
+      - ~/docker/database/mysql:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
