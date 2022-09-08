@@ -7,6 +7,8 @@ USER root
 RUN mkdir /app
 WORKDIR /app
 RUN npm config set registry https://registry.npm.taobao.org
+RUN npm config set sharp_binary_host "https://npmmirror.com/mirrors/sharp"
+RUN npm config set sharp_libvips_binary_host "https://npmmirror.com/mirrors/sharp-libvips"
 RUN yarn global add pm2
 COPY package.json /app/
 RUN TMPDIR=/tmp yarn --ignore-optional && yarn cache clean
