@@ -6,7 +6,7 @@ USER root
 
 RUN mkdir /app
 WORKDIR /app
-
+RUN npm config set registry https://registry.npm.taobao.org
 RUN yarn global add pm2
 COPY package.json /app/
 RUN TMPDIR=/tmp yarn --ignore-optional && yarn cache clean
