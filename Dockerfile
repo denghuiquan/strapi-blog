@@ -1,20 +1,17 @@
-FROM node:14.20.0
-ENV PROJECT_NAME strapi-blog
-LABEL MAINTAINER="dhq <denghuiquan@foxmail.com>"
-
-USER root
-
-RUN mkdir /app
-WORKDIR /app
-RUN npm config set registry https://registry.npm.taobao.org
+FROM node:16
+# Installing libvips-dev for sharp Compatability
+# RUN apt-get update && apt-get install libvips-dev -y
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+WORKDIR /opt/
+COPY ./package.json ./
+ENV PATH /opt/node_modules/.bin:$PATH
+RUN npm config set registry "https://registry.npm.taobao.org"
 RUN npm config set sharp_binary_host "https://npmmirror.com/mirrors/sharp"
 RUN npm config set sharp_libvips_binary_host "https://npmmirror.com/mirrors/sharp-libvips"
-RUN yarn global add pm2
-COPY package.json /app/
-RUN TMPDIR=/tmp yarn --ignore-optional && yarn cache clean
-
-COPY ./ /app/
+RUN yarn config set network-timeout 600000 -g && yarn install
+WORKDIR /opt/app
+COPY ./ .
 RUN yarn build
 EXPOSE 1337
-
-CMD pm2 start --no-daemon process.yml
+CMD ["yarn", "develop"]

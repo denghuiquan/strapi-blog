@@ -4,12 +4,16 @@ module.exports = ({ env }) => ({
   /* connection: {
     client: 'sqlite',
     connection: {
-      filename: path.join(__dirname, '..', env('DATABASE_FILENAME', '.tmp/data.db')),
+      filename: path.join(
+        __dirname,
+        '..',
+        env('DATABASE_FILENAME', '.tmp/data.db')
+      )
     },
-    useNullAsDefault: true,
-  }, */
+    useNullAsDefault: true
+  } */
   connection: {
-    client: 'mysql',
+    client: env('DATABASE_CLIENT', 'mysql'),
     connection: {
       host: env('DATABASE_HOST', '127.0.0.1'),
       port: env.int('DATABASE_PORT', 3306),
