@@ -38,7 +38,7 @@ services:
       #   '--character-set-server=utf8mb4',
       #   '--collation-server=utf8mb4_general_ci'
       # ]
-    platform: linux/amd64 #for platform error on Apple M1 chips
+    # platform: linux/amd64 #for platform error on Apple M1 chips
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
@@ -59,5 +59,4 @@ volumes:
 
 networks:
   strapi:
-    name: Strapi
     driver: bridge
